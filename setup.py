@@ -29,7 +29,7 @@ setup(
         "Operating System :: POSIX :: Linux",
     ],
     python_requires=' >= 3.5',
-    version='0.1.7',
+    version='0.1.8',
     license='MIT',
     install_requires=[
         "falcon >= 2.0.0",
