@@ -27,7 +27,7 @@ jobs:
       steps:
         - uses: actions/download-artifact@v2
           with:
-            name: artifact
+            name: dist
             path: dist
         - uses: pypa/gh-action-pypi-publish@v1.4.1
           with:
@@ -43,7 +43,7 @@ jobs:
       steps:
         - uses: actions/download-artifact@v2
           with:
-            name: artifact
+            name: dist
             path: dist
         - uses: pypa/gh-action-pypi-publish@v1.4.1
           with:
