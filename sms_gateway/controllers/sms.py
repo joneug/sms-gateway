@@ -37,7 +37,7 @@ class SMS(object):
 
         # Check whitelist
         pattern = re.compile(config.WHITELIST)
-        if pattern.match(number):
+        if not pattern.match(number):
             raise falcon.HTTPBadRequest(
                 'Number not allowed',
                 f"The number '{number}' is not allowed. Check your whitelist configuration."
