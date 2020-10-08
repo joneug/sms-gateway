@@ -18,20 +18,20 @@ jobs:
           pip install wheel
           python setup.py sdist bdist_wheel
       - uses: pypa/gh-action-pypi-publish@v1.4.1
-          with:
-            user: __token__
-            password: ${{ secrets.TESTPYPI_PASSWORD }}
-            repository_url: https://test.pypi.org/legacy/
+        with:
+          user: __token__
+          password: ${{ secrets.TESTPYPI_PASSWORD }}
+          repository_url: https://test.pypi.org/legacy/
       - uses: pypa/gh-action-pypi-publish@v1.4.1
-          with:
-            user: __token__
-            password: ${{ secrets.PYPI_PASSWORD }}
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_PASSWORD }}
       - name: Create Release
-          uses: actions/create-release@v1
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            tag_name: ${{ github.ref }}
-            release_name: ${{ github.ref }}
-            draft: false
-            prerelease: false
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
