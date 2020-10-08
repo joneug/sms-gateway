@@ -4,7 +4,7 @@ import os
 import gammu
 
 # Variables
-LOGLEVEL = os.environ.get('SG_LOGLEVEL').upper()
+LOGLEVEL = os.environ.get('SG_LOGLEVEL')
 PORT = int(os.environ.get('SG_PORT'))
 PIN = os.environ.get('SG_PIN')
 TOKEN = os.environ.get('SG_TOKEN')

@@ -2,12 +2,11 @@ name: Package
 
 on:
   push:
-    branches:
-      - 'main'
+    tags:
+      - 'v*.*.*'
 
 env:
   IMAGE_NAME: joneug/sms-gateway
-  IMAGE_TAG: latest
   PLATFORMS: linux/amd64,linux/arm64,linux/arm/v5,linux/arm/v6,linux/arm/v7
 
 jobs:
@@ -25,4 +24,4 @@ jobs:
       - name: Publish to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u joneug --password-stdin
-          docker buildx build --platform $PLATFORMS --tag $IMAGE_NAME:$IMAGE_TAG --file ./Dockerfile --output type=image,push=true .
+          docker buildx build --platform $PLATFORMS --tag $IMAGE_NAME:latest --tag $IMAGE_NAME:${{ github.ref }} --file ./Dockerfile --output type=image,push=true .
