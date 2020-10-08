@@ -48,6 +48,7 @@ def parse_options(options):
     # Log level
     if config.LOGLEVEL is None:
         config.LOGLEVEL = options.loglevel
+    config.LOGLEVEL = config.LOGLEVEL.upper()
     logging.basicConfig(level=config.LOGLEVEL, format='%(asctime)s [%(levelname)s] %(message)s')
 
     # PIN
@@ -59,6 +60,7 @@ def parse_options(options):
     # Port
     if config.PORT is None:
         config.PORT = options.port
+    config.PORT = int(config.PORT)
 
     # Token
     if config.TOKEN is None:
