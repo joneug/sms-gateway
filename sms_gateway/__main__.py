@@ -27,6 +27,7 @@ parser.add_argument('--pin', type=str, help="Sets the PIN used to unlock the mod
 parser.add_argument('--port', type=int, help="Sets the port the web app is listening on.", default=8000)
 parser.add_argument('--token', type=str, help="Sets the authentication token.", default=None)
 parser.add_argument('--device', type=str, help="Sets the device to use with gammu.", default='/dev/modem')
+parser.add_argument('--whitelist', type=str, help="Sets a whitelist for the recipient numbers.", default='.+')
 
 
 def main():
@@ -72,6 +73,10 @@ def parse_options(options):
     # Device
     if config.DEVICE is None:
         config.DEVICE = options.device
+
+    # Whitelist
+    if config.WHITELIST is None:
+        config.WHITELIST = options.whitelist
 
 
 def unlock_modem():

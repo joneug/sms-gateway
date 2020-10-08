@@ -1,4 +1,5 @@
 import json
+import re
 
 import falcon
 
@@ -29,9 +30,19 @@ class SMS(object):
 
     def on_post(self, req, resp):
         number = get_parameter(req, "number")
+        text = get_parameter(req, "text")
+
         # Remove spaces from number
         number = number.replace(" ", "")
-        text = get_parameter(req, "text")
+
+        # Check whitelist
+        pattern = re.compile(config.WHITELIST)
+        if pattern.match(number):
+            raise falcon.HTTPBadRequest(
+                'Number not allowed',
+                f"The number '{number}' is not allowed. Check your whitelist configuration."
+            )
+
         config.SMS_QUEUE.put((number, text))
 
         resp.status = falcon.HTTP_202
