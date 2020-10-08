@@ -1,0 +1,51 @@
+name: Build and Publish
+
+on: [push, pull_request]
+
+jobs:
+    build:
+      name: Build
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - uses: actions/setup-python@v2
+          with:
+            python-version: '3.9'
+        - run: |
+            pip install wheel
+            python setup.py sdist bdist_wheel
+        - uses: actions/upload-artifact@v2
+          with:
+            name: dist
+            path: dist/
+
+    publish-test:
+      name: Publish to TestPyPI
+      needs: [build]
+      runs-on: ubuntu-latest
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+      steps:
+        - uses: actions/download-artifact@v2
+          with:
+            name: artifact
+            path: dist
+        - uses: pypa/gh-action-pypi-publish@v1.4.1
+          with:
+            user: __token__
+            password: ${{ secrets.TESTPYPI_PASSWORD }}
+            repository_url: https://test.pypi.org/legacy/
+
+    publish:
+      name: Publish to PyPI
+      needs: [build, publish-test]
+      runs-on: ubuntu-latest
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+      steps:
+        - uses: actions/download-artifact@v2
+          with:
+            name: artifact
+            path: dist
+        - uses: pypa/gh-action-pypi-publish@v1.4.1
+          with:
+            user: __token__
+            password: ${{ secrets.PYPI_PASSWORD }}

@@ -1,0 +1,28 @@
+name: Package
+
+on:
+  push:
+    branches:
+      - 'master'
+
+env:
+  IMAGE_NAME: joneug/sms-gateway
+  IMAGE_TAG: latest
+  PLATFORMS: linux/amd64,linux/arm64,linux/arm/v5,linux/arm/v6,linux/arm/v7
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: arm,arm64
+      - uses: docker/setup-buildx-action@v1
+        with:
+          version: latest
+      - name: Publish to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u joneug --password-stdin
+          docker buildx build --platform $PLATFORMS --tag $IMAGE_NAME:$IMAGE_TAG --file ./Dockerfile --output type=image,push=true .
