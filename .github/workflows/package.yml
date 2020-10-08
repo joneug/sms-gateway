@@ -21,7 +21,9 @@ jobs:
       - uses: docker/setup-buildx-action@v1
         with:
           version: latest
+      - name: Get the version
+        run: echo ::set-env name=VERSION::${GITHUB_REF/refs\/tags\/v/}
       - name: Publish to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u joneug --password-stdin
-          docker buildx build --platform $PLATFORMS --tag $IMAGE_NAME:latest --tag $IMAGE_NAME:${{ github.ref }} --file ./Dockerfile --output type=image,push=true .
+          docker buildx build --platform $PLATFORMS --tag $IMAGE_NAME:latest --tag $IMAGE_NAME:$VERSION --file ./Dockerfile --output type=image,push=true .
